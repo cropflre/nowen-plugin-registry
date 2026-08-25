@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cropflre.github.io/nowen-plugin-registry/schemas/advisory.schema.json",
+  "title": "Nowen Security Advisory Draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "sequence", "pluginId", "affectedVersionRange", "issuedAt", "expiresAt", "severity", "action", "state", "replaces", "title"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "pluginId": { "type": "string", "minLength": 1 },
+    "affectedVersionRange": { "type": "string", "minLength": 1 },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "severity": { "enum": ["critical", "high", "medium", "low"] },
+    "action": { "enum": ["disable", "recommend", "warn", "info"] },
+    "threatState": { "enum": ["vulnerable", "revoked", "malicious"] },
+    "state": { "enum": ["active", "withdrawn"] },
+    "replaces": { "type": ["string", "null"] },
+    "title": { "type": "string", "minLength": 1 },
+    "detailsUrl": { "type": "string", "format": "uri" }
+  }
+}

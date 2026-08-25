@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cropflre.github.io/nowen-plugin-registry/schemas/registry.schema.json",
+  "title": "Nowen Signed Registry V2",
+  "type": "object",
+  "required": ["protocolVersion", "sequence", "generatedAt", "expiresAt", "signerKeyId", "publishers", "extensions", "advisories", "signature"],
+  "properties": {
+    "protocolVersion": { "const": 2 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "signerKeyId": { "type": "string", "minLength": 1 },
+    "rootRotations": { "type": "array" },
+    "publishers": { "type": "array" },
+    "extensions": { "type": "array" },
+    "advisories": { "type": "array" },
+    "signature": { "type": "string", "minLength": 1 }
+  }
+}

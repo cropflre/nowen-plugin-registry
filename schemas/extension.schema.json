@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cropflre.github.io/nowen-plugin-registry/schemas/extension.schema.json",
+  "title": "Nowen Extension Submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "publisher", "name", "trustLevel", "versions"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$" },
+    "publisher": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "trustLevel": { "enum": ["official", "verified", "community"] },
+    "repository": { "type": "string", "format": "uri" },
+    "homepage": { "type": "string", "format": "uri" },
+    "license": { "type": "string" },
+    "category": { "type": "string" },
+    "keywords": { "type": "array", "items": { "type": "string" } },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "apiVersion", "runtime", "artifactUrl", "sha256", "publisherKeyId", "signature", "nowen", "permissions"],
+        "properties": {
+          "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$" },
+          "apiVersion": { "const": 2 },
+          "runtime": { "const": "sandbox-js" },
+          "artifactUrl": { "type": "string", "format": "uri" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "publisherKeyId": { "type": "string", "minLength": 1 },
+          "signature": { "type": "string", "minLength": 1 },
+          "nowen": { "type": "string", "minLength": 1 },
+          "permissions": { "type": "array", "items": { "type": "string" } },
+          "permissionConfig": { "type": "object" },
+          "platforms": { "type": "array", "items": { "type": "string" } },
+          "runtimePlatform": { "type": "array", "items": { "type": "string" } },
+          "uiPlatform": { "type": "array", "items": { "type": "string" } },
+          "channel": { "type": "string" },
+          "publishedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

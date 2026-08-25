@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cropflre.github.io/nowen-plugin-registry/schemas/publisher.schema.json",
+  "title": "Nowen Publisher",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["publisher", "name", "keys"],
+  "properties": {
+    "publisher": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "keys": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["keyId", "publicKey", "state", "validFrom", "validUntil"],
+        "properties": {
+          "keyId": { "type": "string", "minLength": 1 },
+          "publicKey": { "type": "string", "minLength": 1 },
+          "state": { "enum": ["active", "revoked"] },
+          "validFrom": { "type": "string", "format": "date-time" },
+          "validUntil": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}
