@@ -32,6 +32,15 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Require Registry signing key
+        shell: bash
+        env:
+          NOWEN_REGISTRY_SIGNING_PRIVATE_KEY: ${{ secrets.NOWEN_REGISTRY_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [[ -z "$NOWEN_REGISTRY_SIGNING_PRIVATE_KEY" ]]; then
+            echo "NOWEN_REGISTRY_SIGNING_PRIVATE_KEY repository secret is required" >&2
+            exit 1
+          fi
       - run: npm ci
       - run: npm test
       - run: npm run check

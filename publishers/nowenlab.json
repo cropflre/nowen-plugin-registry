@@ -4,7 +4,7 @@
   "keys": [
     {
       "keyId": "nowenlab-2026",
-      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAmeo+B17RXY0k7I3zV/AtJt84UltXskEJucpj3ny5oOk=\n-----END PUBLIC KEY-----\n",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA3G0rMfm/mfzjTb3jYb28+d7V46lalt2o95/7lQw2bMo=\n-----END PUBLIC KEY-----\n",
       "state": "active",
       "validFrom": "2026-08-25T00:00:00.000Z",
       "validUntil": "2031-08-25T00:00:00.000Z"

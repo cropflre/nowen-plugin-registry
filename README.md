@@ -38,6 +38,15 @@ npm run verify:dist
 
 `npm run sign` uses `.secrets/registry-root-private.pem` locally or `NOWEN_REGISTRY_SIGNING_PRIVATE_KEY` in protected CI. Private keys are ignored and must never be committed.
 
+Generate a new Ed25519 key pair only before the corresponding public key ships in a Nowen release:
+
+```bash
+npm run keys:generate -- --name registry-root
+npm run keys:generate -- --name nowenlab-2026
+```
+
+The command refuses to overwrite existing key files. Back up private keys offline before adding the Registry private PEM to GitHub Actions or using the Publisher private PEM to sign an artifact.
+
 Before publishing changed metadata, bump the signed release envelope:
 
 ```bash

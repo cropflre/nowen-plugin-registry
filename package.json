@@ -10,10 +10,11 @@
     "check": "node scripts/validate.mjs",
     "build": "node scripts/build-registry.mjs",
     "sign": "node scripts/sign-registry.mjs",
+    "keys:generate": "node scripts/generate-keypair.mjs",
     "verify:artifacts": "node scripts/verify-artifacts.mjs",
     "verify:dist": "node scripts/verify-dist.mjs",
     "release:bump": "node scripts/bump-release.mjs",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/registry.test.mjs"
   },
   "license": "MIT"
 }
