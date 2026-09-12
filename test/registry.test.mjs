@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import test from "node:test";
-import { canonicalJson, signDocument, verifySignedDocument } from "../scripts/lib.mjs";
+import { canonicalJson, signDocument, validatePublicRuntime, verifySignedDocument } from "../scripts/lib.mjs";
 
 test("canonical JSON recursively sorts object keys", () => {
   assert.equal(canonicalJson({ z: 1, a: { y: 2, b: 3 }, list: [{ d: 4, c: 5 }] }), '{"a":{"b":3,"y":2},"list":[{"c":5,"d":4}],"z":1}');
@@ -20,4 +20,27 @@ test("Publisher signatures cover the raw SHA256 digest", () => {
   const signature = crypto.sign(null, digest, pair.privateKey);
   assert.equal(crypto.verify(null, digest, pair.publicKey, signature), true);
   assert.equal(crypto.verify(null, crypto.createHash("sha256").update("tampered").digest(), pair.publicKey, signature), false);
+});
+
+test("Public Registry accepts zero-permission V2.1 declarative packages", () => {
+  assert.doesNotThrow(() => validatePublicRuntime({
+    apiVersion: 2,
+    runtime: "declarative",
+    nowen: ">=1.6.0 <2.0.0",
+    permissions: [],
+  }, "nowenlab.theme-pack@1.0.0"));
+
+  assert.throws(() => validatePublicRuntime({
+    apiVersion: 2,
+    runtime: "declarative",
+    nowen: ">=1.6.0 <2.0.0",
+    permissions: ["notes:read"],
+  }, "nowenlab.theme-pack@1.0.0"), /不能请求权限/);
+
+  assert.throws(() => validatePublicRuntime({
+    apiVersion: 2,
+    runtime: "declarative",
+    nowen: ">=1.5.0 <2.0.0",
+    permissions: [],
+  }, "nowenlab.theme-pack@1.0.0"), /Nowen >=1\.6\.0/);
 });

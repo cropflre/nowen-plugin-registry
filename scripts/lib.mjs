@@ -9,6 +9,7 @@ export const PUBLISHER_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 export const SEMVER_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
 export const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 export const ALLOWED_TRUST_LEVELS = new Set(["official", "verified", "community"]);
+export const ALLOWED_PUBLIC_RUNTIMES = new Set(["sandbox-js", "declarative"]);
 
 export function fail(message) {
   throw new Error(message);
@@ -55,6 +56,51 @@ export function assertIsoRange(validFrom, validUntil, label) {
   const start = Date.parse(validFrom);
   const end = Date.parse(validUntil);
   if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) fail(`${label} 有效期无效`);
+}
+
+function parseVersion(value) {
+  const match = /^(\d+)\.(\d+)\.(\d+)/.exec(value);
+  return match ? match.slice(1).map(Number) : null;
+}
+
+function compareVersion(left, right) {
+  for (let index = 0; index < 3; index += 1) {
+    if (left[index] !== right[index]) return left[index] - right[index];
+  }
+  return 0;
+}
+
+function nowenVersionSatisfies(range, current) {
+  const actual = parseVersion(current);
+  if (!actual) return false;
+  return range.trim().split(/\s+/).every((clause) => {
+    const match = /^(>=|<=|>|<|=|\^|~)?(\d+\.\d+\.\d+)$/.exec(clause);
+    if (!match) return false;
+    const expected = parseVersion(match[2]);
+    if (!expected) return false;
+    const comparison = compareVersion(actual, expected);
+    switch (match[1] || "=") {
+      case ">=": return comparison >= 0;
+      case "<=": return comparison <= 0;
+      case ">": return comparison > 0;
+      case "<": return comparison < 0;
+      case "^": return actual[0] === expected[0] && comparison >= 0;
+      case "~": return actual[0] === expected[0] && actual[1] === expected[1] && comparison >= 0;
+      default: return comparison === 0;
+    }
+  });
+}
+
+export function validatePublicRuntime(version, coordinate) {
+  if (version.apiVersion !== 2 || !ALLOWED_PUBLIC_RUNTIMES.has(version.runtime)) {
+    fail(`${coordinate} Public Beta 只接受 V2 sandbox-js 或 declarative`);
+  }
+  if (version.runtime === "declarative") {
+    if (!Array.isArray(version.permissions) || version.permissions.length > 0) fail(`${coordinate} declarative 不能请求权限`);
+    if (!nowenVersionSatisfies(version.nowen || "", "1.6.0") || nowenVersionSatisfies(version.nowen || "", "1.5.0")) {
+      fail(`${coordinate} declarative 必须要求 Nowen >=1.6.0`);
+    }
+  }
 }
 
 export function assertHttpsUrl(value, label, options = {}) {
@@ -130,7 +176,7 @@ function validateExtension(extension, label, publishers) {
     const coordinate = `${extension.id}@${version.version || "?"}`;
     if (!SEMVER_PATTERN.test(version.version || "") || versions.has(version.version)) fail(`${coordinate} 版本无效或重复`);
     versions.add(version.version);
-    if (version.apiVersion !== 2 || version.runtime !== "sandbox-js") fail(`${coordinate} Public Beta 只接受 V2 sandbox-js`);
+    validatePublicRuntime(version, coordinate);
     assertHttpsUrl(version.artifactUrl, `${coordinate} artifactUrl`, { githubRelease: true });
     if (!SHA256_PATTERN.test(version.sha256 || "") || typeof version.signature !== "string" || !version.signature) fail(`${coordinate} SHA256/签名无效`);
     const key = publishers.keys.get(version.publisherKeyId);

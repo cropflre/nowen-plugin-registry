@@ -26,7 +26,7 @@
         "properties": {
           "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$" },
           "apiVersion": { "const": 2 },
-          "runtime": { "const": "sandbox-js" },
+          "runtime": { "enum": ["sandbox-js", "declarative"] },
           "artifactUrl": { "type": "string", "format": "uri" },
           "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
           "publisherKeyId": { "type": "string", "minLength": 1 },
