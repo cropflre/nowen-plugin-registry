@@ -9,4 +9,6 @@
 
 Public Beta accepts V2 `sandbox-js` packages and V2.1 `declarative` packages. Declarative packages must require Nowen 1.6.0 or newer, request zero permissions, and contain no executable runtime code. A previously published `(plugin id, version)` coordinate may never change its URL, digest, signature, runtime, permissions or compatibility range.
 
+Maintainer-reviewed `nowenlab` extensions marked `official` may also publish V2 `node-action` packages, signed by an active registered Publisher key. Community and Verified Node submissions remain rejected. Installation and execution still require the application's administrator-controlled `allowNodeRuntime` policy; publication does not enable it.
+
 Publisher private keys and Registry private keys must never be committed, attached to issues, or pasted into pull requests.

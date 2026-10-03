@@ -91,9 +91,11 @@ function nowenVersionSatisfies(range, current) {
   });
 }
 
-export function validatePublicRuntime(version, coordinate) {
-  if (version.apiVersion !== 2 || !ALLOWED_PUBLIC_RUNTIMES.has(version.runtime)) {
-    fail(`${coordinate} Public Beta 只接受 V2 sandbox-js 或 declarative`);
+export function validatePublicRuntime(version, coordinate, extension = {}) {
+  const officialNode = version.runtime === "node-action"
+    && extension.trustLevel === "official" && extension.publisher === "nowenlab";
+  if (version.apiVersion !== 2 || !ALLOWED_PUBLIC_RUNTIMES.has(version.runtime) && !officialNode) {
+    fail(`${coordinate} Public Beta 只接受 V2 sandbox-js、declarative 或 nowenlab 官方 Node 插件`);
   }
   if (version.runtime === "declarative") {
     if (!Array.isArray(version.permissions) || version.permissions.length > 0) fail(`${coordinate} declarative 不能请求权限`);
@@ -176,7 +178,7 @@ function validateExtension(extension, label, publishers) {
     const coordinate = `${extension.id}@${version.version || "?"}`;
     if (!SEMVER_PATTERN.test(version.version || "") || versions.has(version.version)) fail(`${coordinate} 版本无效或重复`);
     versions.add(version.version);
-    validatePublicRuntime(version, coordinate);
+    validatePublicRuntime(version, coordinate, extension);
     assertHttpsUrl(version.artifactUrl, `${coordinate} artifactUrl`, { githubRelease: true });
     if (!SHA256_PATTERN.test(version.sha256 || "") || typeof version.signature !== "string" || !version.signature) fail(`${coordinate} SHA256/签名无效`);
     const key = publishers.keys.get(version.publisherKeyId);

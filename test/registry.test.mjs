@@ -44,3 +44,13 @@ test("Public Registry accepts zero-permission V2.1 declarative packages", () => 
     permissions: [],
   }, "nowenlab.theme-pack@1.0.0"), /Nowen >=1\.6\.0/);
 });
+
+test("Node publication is limited to signed nowenlab official metadata", () => {
+  const version = { apiVersion: 2, runtime: "node-action", nowen: ">=1.5.0 <2.0.0", permissions: ["capture:write"] };
+  const coordinate = "nowenlab.wechat-capture@1.0.0";
+  assert.doesNotThrow(() => validatePublicRuntime(version, coordinate, { publisher: "nowenlab", trustLevel: "official" }));
+  for (const extension of [{}, { publisher: "nowenlab", trustLevel: "community" }, { publisher: "nowenlab", trustLevel: "verified" }, { publisher: "other", trustLevel: "official" }]) {
+    assert.throws(() => validatePublicRuntime(version, coordinate, extension), /nowenlab 官方 Node/);
+  }
+  assert.throws(() => validatePublicRuntime({ ...version, apiVersion: 1 }, coordinate, { publisher: "nowenlab", trustLevel: "official" }), /Public Beta/);
+});

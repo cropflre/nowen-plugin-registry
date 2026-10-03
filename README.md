@@ -10,7 +10,7 @@ GitHub is transport and hosting, not the trust root. Nowen verifies:
 2. the canonical JSON Registry signature;
 3. the active Publisher key;
 4. the artifact SHA-256 and Publisher signature;
-5. Manifest identity, compatibility, sandbox/declarative runtime, permissions and advisories.
+5. Manifest identity, compatibility, runtime policy, permissions and advisories.
 
 The public index is deployed to:
 

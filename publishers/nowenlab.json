@@ -8,6 +8,13 @@
       "state": "active",
       "validFrom": "2026-08-25T00:00:00.000Z",
       "validUntil": "2031-08-25T00:00:00.000Z"
+    },
+    {
+      "keyId": "nowenlab-wechat-2026",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEARraQ25WQmSArrLaqtfIGcJitRWfnZObbZMmOAhamDYo=\n-----END PUBLIC KEY-----\n",
+      "state": "active",
+      "validFrom": "2026-10-03T16:14:51.052Z",
+      "validUntil": "2031-10-03T16:14:51.052Z"
     }
   ]
 }

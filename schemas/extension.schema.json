@@ -26,7 +26,7 @@
         "properties": {
           "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$" },
           "apiVersion": { "const": 2 },
-          "runtime": { "enum": ["sandbox-js", "declarative"] },
+          "runtime": { "enum": ["sandbox-js", "declarative", "node-action"] },
           "artifactUrl": { "type": "string", "format": "uri" },
           "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
           "publisherKeyId": { "type": "string", "minLength": 1 },
@@ -42,5 +42,11 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "versions": { "contains": { "properties": { "runtime": { "const": "node-action" } }, "required": ["runtime"] } } } },
+      "then": { "properties": { "trustLevel": { "const": "official" }, "publisher": { "const": "nowenlab" } } }
+    }
+  ]
 }
