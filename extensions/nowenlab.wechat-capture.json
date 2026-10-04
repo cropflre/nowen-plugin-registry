@@ -1,8 +1,8 @@
 {
   "id": "nowenlab.wechat-capture",
   "publisher": "nowenlab",
-  "name": "微信公众号采集",
-  "description": "通过通用入站 Webhook 接收绑定用户的文本及文章链接，后台保存到 Nowen Note。",
+  "name": "微信采集助手",
+  "description": "连接微信后，发送单篇或多篇文章链接，自动保存到微信收件箱。",
   "repository": "https://github.com/cropflre/nowen-note",
   "license": "AGPL-3.0",
   "trustLevel": "official",
@@ -24,6 +24,36 @@
       "sha256": "822f67dc3f6b31e941b3017e363c421e13264d0c0f0967e134a15def781320cc",
       "publisherKeyId": "nowenlab-wechat-2026",
       "signature": "LgR5/a/5NzRGKOA4v9nVxEppAeCcWz+yIsfisU7Rj/6VNzeM3M732z0PTgtwRCEIYy9qIvQk3P03c/6j94yyCw==",
+      "nowen": ">=1.5.0 <2.0.0",
+      "permissions": [
+        "notes:write",
+        "notebooks:read",
+        "tags:read",
+        "tags:write",
+        "plugin-storage:read",
+        "plugin-storage:write",
+        "secrets:use",
+        "capture:write"
+      ],
+      "runtimePlatform": [
+        "server",
+        "desktop-full"
+      ],
+      "uiPlatform": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "channel": "stable"
+    },
+    {
+      "version": "1.1.0",
+      "apiVersion": 2,
+      "runtime": "node-action",
+      "artifactUrl": "https://github.com/cropflre/nowen-plugin-registry/releases/download/wechat-capture-v1.1.0/nowenlab.wechat-capture-1.1.0.nowen-plugin",
+      "sha256": "cd9b43a5b09c89fff25dcaf06ab5a9b195cc4d12167da51cadad393d932d37db",
+      "publisherKeyId": "nowenlab-wechat-2026",
+      "signature": "IffjbANW51C8jvTKs2zq7jkFEuCGF6eTAG/w6IQ0QlJqYEQBEl0gtpLHE8LcG+Is3ZSMDmw0h3lAUAPBtTJPAw==",
       "nowen": ">=1.5.0 <2.0.0",
       "permissions": [
         "notes:write",
